@@ -20,23 +20,18 @@
 ## 🗂️ Project Structure
 
 ISLAP1/
-├── algorithms/         # Scoring algorithms
+├── algorithms/     
 │   ├── jaro_winkler.py
 │   ├── levenshtein.py
 │   ├── soundex.py
 │   └── scorer.py
-├── cli/                # CLI entry point
+├── cli/        
 │   └── main.py
-├── data/               # XML file and database converter
+├── data/   
 │   ├── sanctions_list.XML
 │   └── xml_to_sqlite.py
-├── search/             # Search engine and DB loading logic
+├── search/  
 │   ├── db_loader.py
 │   └── search_engine.py
-├── identifier.sqlite   # Generated SQLite DB of parsed entities
-├── venv/               # (optional) Virtual environment
+├── identifier.sqlit
 └── README.md 
-
----
-
-
