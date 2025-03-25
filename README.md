@@ -1,4 +1,4 @@
-# ISLAP – Identity Screening & List Analysis Platform
+# ISLAP – International Sanctions List Approximation Processing
 
 **ISLAP** is a modular Python project designed to parse and load sanctions data, store it in a local database, and allow advanced name-matching using multiple string similarity algorithms. It supports both automated parsing of XML-based data and interactive searching through a command-line interface.
 
