@@ -1,7 +1,5 @@
-
 from search.db_loader import load_names_from_db
 from search.search_engine import find_best_matches
-
 
 def main():
     input_name = input("Enter a name to search: ").strip()

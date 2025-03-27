@@ -19,19 +19,18 @@
 
 ## 🗂️ Project Structure
 
-ISLAP1/
+ISLAP/
 ├── algorithms/     
 │   ├── jaro_winkler.py
 │   ├── levenshtein.py
 │   ├── soundex.py
 │   └── scorer.py
 ├── cli/        
-│   └── main.py
+│   └── main
+    |__ api.py
 ├── data/   
 │   ├── sanctions_list.XML
 │   └── xml_to_sqlite.py
 ├── search/  
 │   ├── db_loader.py
-│   └── search_engine.py
-├── identifier.sqlit
-└── README.md 
+    └── search_engine.p
