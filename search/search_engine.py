@@ -1,6 +1,6 @@
 from algorithms.scorer import combined_score
 
-def find_best_matches(input_name, db_names, threshold=0.75):
+def find_best_matches(input_name, db_names, threshold=0.6):
     matches = []
     for name in db_names:
         score = combined_score(input_name, name)

@@ -1,4 +1,6 @@
 __pycache__/
 *.pyc
 *.log
-data/sanctions.db
+*.db
+*.sqlite3
+*.DS_Store
