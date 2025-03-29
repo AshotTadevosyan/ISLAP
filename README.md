@@ -19,18 +19,16 @@
 
 ## 🗂️ Project Structure
 
-ISLAP/
-├── algorithms/     
-│   ├── jaro_winkler.py
-│   ├── levenshtein.py
-│   ├── soundex.py
-│   └── scorer.py
-├── cli/        
-│   └── main
-    |__ api.py
-├── data/   
-│   ├── sanctions_list.XML
-│   └── xml_to_sqlite.py
-├── search/  
-│   ├── db_loader.py
-    └── search_engine.p
+├── README.md               # Project overview and instructions
+├── identifier.sqlite       # SQLite database for storing sanctions data
+├── main.py                 # Main entry point for the application
+├── parser/                 # Directory for parsing modules
+│   └── xml_parser.py       # XML parsing logic
+├── search/                 # Directory for search modules
+│   └── search_engine.py    # Search engine logic
+├── scoring/                # Directory for scoring modules
+│   ├── jaro_winkler.py     # Jaro-Winkler algorithm implementation
+│   ├── levenshtein.py      # Levenshtein distance algorithm implementation
+│   └── soundex.py          # Soundex algorithm implementation
+└── utils/                  # Directory for utility modules
+    └── database.py         # Database interaction logic
