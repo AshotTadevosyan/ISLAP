@@ -7,3 +7,6 @@ __pycache__/
 identifier.sqlite
 .idea/
 **/.DS_Store
+*.xml
+*.XML
+all_files.txt
