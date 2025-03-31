@@ -10,57 +10,42 @@ function App() {
     e.preventDefault();
     const fullName = `${firstName} ${lastName}`.trim();
     if (!fullName) {
-      alert("Please enter both first and last name.");
+      alert("Please enter a name.");
       return;
     }
 
     try {
       const res = await fetch(`/search?name=${encodeURIComponent(fullName)}`);
+      if (!res.ok) throw new Error("Search failed");
+
       const data = await res.json();
       const filtered = data.filter((match) => match.score >= threshold);
       setResults(filtered);
     } catch (err) {
-      alert("Search failed. Is the backend running?");
+      console.error(err);
+      alert("Search failed. Make sure the backend is running and deployed correctly.");
     }
   };
 
   return (
-    <div style={{
-      fontFamily: "Segoe UI, sans-serif",
-      backgroundColor: "#f9fafb",
-      minHeight: "100vh",
-      padding: "2rem",
-      display: "flex",
-      flexDirection: "column",
-      alignItems: "center"
-    }}>
-      <div style={{
-        backgroundColor: "#ffffff",
-        padding: "2rem",
-        borderRadius: "8px",
-        boxShadow: "0 2px 8px rgba(0, 0, 0, 0.1)",
-        width: "100%",
-        maxWidth: "600px"
-      }}>
-        <h1 style={{ marginBottom: "1rem", fontSize: "1.75rem", textAlign: "center" }}>
-          ISLAP – Sanctions Name Matcher
-        </h1>
-
+    <div style={styles.container}>
+      <div style={styles.card}>
+        <h1 style={styles.title}>ISLAP – Sanctions Search</h1>
         <form onSubmit={handleSearch}>
-          <div style={{ display: "flex", gap: "1rem", marginBottom: "1rem" }}>
+          <div style={styles.inputRow}>
             <input
               type="text"
               placeholder="First Name"
               value={firstName}
               onChange={(e) => setFirstName(e.target.value)}
-              style={inputStyle}
+              style={styles.input}
             />
             <input
               type="text"
               placeholder="Last Name"
               value={lastName}
               onChange={(e) => setLastName(e.target.value)}
-              style={inputStyle}
+              style={styles.input}
             />
           </div>
 
@@ -78,12 +63,12 @@ function App() {
             />
           </div>
 
-          <button type="submit" style={buttonStyle}>
+          <button type="submit" style={styles.button}>
             Search
           </button>
         </form>
 
-        <ul style={{ marginTop: "2rem", paddingLeft: "1rem" }}>
+        <ul style={styles.results}>
           {results.length === 0 ? (
             <li style={{ color: "#999" }}>No matches found.</li>
           ) : (
@@ -99,24 +84,55 @@ function App() {
   );
 }
 
-const inputStyle = {
-  padding: "0.5rem",
-  width: "100%",
-  border: "1px solid #ccc",
-  borderRadius: "4px",
-  fontSize: "1rem"
-};
-
-const buttonStyle = {
-  padding: "0.5rem 1rem",
-  fontSize: "1rem",
-  backgroundColor: "#0057ff",
-  color: "#fff",
-  border: "none",
-  borderRadius: "4px",
-  cursor: "pointer",
-  width: "100%",
-  marginTop: "0.5rem"
+const styles = {
+  container: {
+    fontFamily: "Segoe UI, sans-serif",
+    backgroundColor: "#f9fafb",
+    minHeight: "100vh",
+    padding: "2rem",
+    display: "flex",
+    justifyContent: "center",
+  },
+  card: {
+    backgroundColor: "#ffffff",
+    padding: "2rem",
+    borderRadius: "8px",
+    boxShadow: "0 2px 8px rgba(0, 0, 0, 0.1)",
+    width: "100%",
+    maxWidth: "600px",
+  },
+  title: {
+    marginBottom: "1.5rem",
+    fontSize: "1.75rem",
+    textAlign: "center",
+  },
+  inputRow: {
+    display: "flex",
+    gap: "1rem",
+    marginBottom: "1rem",
+  },
+  input: {
+    padding: "0.5rem",
+    flex: 1,
+    border: "1px solid #ccc",
+    borderRadius: "4px",
+    fontSize: "1rem",
+  },
+  button: {
+    padding: "0.5rem 1rem",
+    fontSize: "1rem",
+    backgroundColor: "#0057ff",
+    color: "#fff",
+    border: "none",
+    borderRadius: "4px",
+    cursor: "pointer",
+    width: "100%",
+    marginTop: "0.5rem",
+  },
+  results: {
+    marginTop: "2rem",
+    paddingLeft: "1rem",
+  },
 };
 
 export default App;
