@@ -14,7 +14,7 @@ function App() {
     }
 
     try {
-      const res = await fetch(`/search?name=${encodeURIComponent(fullName)}`);
+      const res = await fetch(`${BACK_MAIN_API_URL}/search?name=${encodeURIComponent(fullName)}`);
       if (!res.ok) throw new Error("Search failed");
       const data = await res.json();
       const filtered = data.filter((match) => match.score >= threshold);
