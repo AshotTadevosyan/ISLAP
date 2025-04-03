@@ -3,6 +3,8 @@ import "./layout.css";
 
 function App() {
   const [fullName, setFullName] = useState("");
+  const [country, setCountry] = useState("");
+  const [sanctionId, setSanctionId] = useState("");
   const [threshold, setThreshold] = useState(75);
   const [results, setResults] = useState([]);
 
@@ -14,7 +16,11 @@ function App() {
     }
 
     try {
-      const res = await fetch(`${BACK_MAIN_API_URL}/search?name=${encodeURIComponent(fullName)}`);
+      const res = await fetch(
+        `/search?name=${encodeURIComponent(fullName)}&country=${encodeURIComponent(
+          country
+        )}&sanction_id=${encodeURIComponent(sanctionId)}`
+      );
       if (!res.ok) throw new Error("Search failed");
       const data = await res.json();
       const filtered = data.filter((match) => match.score >= threshold);
@@ -37,6 +43,20 @@ function App() {
             onChange={(e) => setFullName(e.target.value)}
             className="input"
           />
+          <input
+            type="text"
+            placeholder="Country"
+            value={country}
+            onChange={(e) => setCountry(e.target.value)}
+            className="input"
+          />
+          <input
+            type="text"
+            placeholder="Sanction ID"
+            value={sanctionId}
+            onChange={(e) => setSanctionId(e.target.value)}
+            className="input"
+          />
           <label className="threshold-label">
             Similarity Threshold: <strong>{threshold}%</strong>
           </label>
@@ -48,13 +68,17 @@ function App() {
             onChange={(e) => setThreshold(parseInt(e.target.value))}
             className="slider"
           />
-          <button type="submit" className="search-button">Search</button>
+          <button type="submit" className="search-button">
+            Search
+          </button>
         </form>
         <ul className="results">
           {results.length > 0 ? (
             results.map((match, idx) => (
               <li key={idx}>
                 <strong>{match.name}</strong> – {match.score}%
+                <div>Country: {match.country}</div>
+                <div>Sanction ID: {match.sanction_id}</div>
               </li>
             ))
           ) : (
