@@ -10,3 +10,4 @@ identifier.sqlite
 *.xml
 *.XML
 all_files.txt
+build/
