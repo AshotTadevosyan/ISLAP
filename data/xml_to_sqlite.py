@@ -1,88 +1,14 @@
 import os
-import glob
 import sqlite3
 import xml.etree.ElementTree as ET
 
-DB_PATH = 'data/sanctions.db'
-
-ENHANCED_NS = {
+DB_PATH = "data/sanctions.db"
+XML_FILE = "data/cons_enhanced-2.xml"
+NS = {
     "ns": "https://sanctionslistservice.ofac.treas.gov/api/PublicationPreview/exports/ENHANCED_XML"
 }
 
-ADVANCED_NS = {
-    "ns": "https://sanctionslistservice.ofac.treas.gov/api/PublicationPreview/exports/ADVANCED_XML"
-}
-
-def parse_enhanced_file(path, cursor):
-    tree = ET.parse(path)
-    root = tree.getroot()
-    print(f"[ENHANCED] Parsing: {path}")
-
-    for entity in root.findall(".//ns:entity", ENHANCED_NS):
-        translation = entity.find(".//ns:translation", ENHANCED_NS)
-        full = translation.findtext("ns:formattedFullName", default="", namespaces=ENHANCED_NS).strip() if translation is not None else ""
-        country = entity.findtext("ns:country", default="", namespaces=ENHANCED_NS).strip()
-        uid = entity.findtext("ns:uid", default="", namespaces=ENHANCED_NS).strip()
-
-        if full:
-            print(f"[ENHANCED] Inserting: {full}, {country}, {uid}")
-            cursor.execute(
-                "INSERT INTO sanctions (full_name, country, sanction_id) VALUES (?, ?, ?)",
-                (full, country, uid)
-            )
-
-def parse_advanced_file(path, cursor):
-    tree = ET.parse(path)
-    root = tree.getroot()
-    print(f"[ADVANCED] Parsing: {path}")
-
-    for party in root.findall(".//ns:DistinctParties/ns:distinctParty", ADVANCED_NS):
-        name_node = party.find(".//ns:wholeName", ADVANCED_NS)
-        country_node = party.find(".//ns:country", ADVANCED_NS)
-        uid_node = party.find(".//ns:uid", ADVANCED_NS)
-
-        full = name_node.text.strip() if name_node is not None else ""
-        country = country_node.text.strip() if country_node is not None else ""
-        uid = uid_node.text.strip() if uid_node is not None else ""
-
-        if full:
-            print(f"[ADVANCED] Inserting: {full}, {country}, {uid}")
-            cursor.execute(
-                "INSERT INTO sanctions (full_name, country, sanction_id) VALUES (?, ?, ?)",
-                (full, country, uid)
-            )
-
-def parse_sdn_file(path, cursor):
-    tree = ET.parse(path)
-    root = tree.getroot()
-    print(f"[SDN] Parsing: {path}")
-
-    for entry in root.findall(".//sdnEntry"):
-        first = entry.findtext("firstName", default="").strip()
-        last = entry.findtext("lastName", default="").strip()
-        full = f"{first} {last}".strip()
-
-        country = entry.findtext("country", default="").strip()
-        uid = entry.findtext("uid", default="").strip()
-
-        if full:
-            print(f"[SDN] Inserting: {full}, {country}, {uid}")
-            cursor.execute(
-                "INSERT INTO sanctions (full_name, country, sanction_id) VALUES (?, ?, ?)",
-                (full, country, uid)
-            )
-
-def parse_generic_xml(path, cursor):
-    filename = os.path.basename(path).lower()
-
-    if "enhanced" in filename:
-        parse_enhanced_file(path, cursor)
-    elif "advanced" in filename:
-        parse_advanced_file(path, cursor)
-    elif "sdn" in filename or "consolidated" in filename:
-        parse_sdn_file(path, cursor)
-
-def load_all_to_db():
+def parse_and_load():
     if os.path.exists(DB_PATH):
         os.remove(DB_PATH)
 
@@ -91,21 +17,45 @@ def load_all_to_db():
     cursor.execute("""
         CREATE TABLE IF NOT EXISTS sanctions (
             id INTEGER PRIMARY KEY AUTOINCREMENT,
-            full_name TEXT NOT NULL,
+            first_name TEXT,
+            last_name TEXT,
             country TEXT,
-            sanction_id TEXT
+            date_of_birth TEXT,
+            program TEXT
         )
     """)
 
-    DATA_DIR = 'data'
-    xml_files = glob.glob(os.path.join(DATA_DIR, "*.xml"))
-    for xml_file in xml_files:
-        print(f"Processing: {xml_file}")
-        parse_generic_xml(xml_file, cursor)
+    tree = ET.parse(XML_FILE)
+    root = tree.getroot()
+
+    for entity in root.findall(".//ns:entity", NS):
+        translation = entity.find(".//ns:translation", NS)
+        first_name = translation.findtext("ns:formattedFirstName", default="", namespaces=NS).strip() if translation is not None else ""
+        last_name = translation.findtext("ns:formattedLastName", default="", namespaces=NS).strip() if translation is not None else ""
+
+        country_elem = entity.find(".//ns:address/ns:country", NS)
+        country = country_elem.text.strip() if country_elem is not None else ""
+
+        program_elem = entity.find(".//ns:sanctionsProgram", NS)
+        program = program_elem.text.strip() if program_elem is not None else ""
+
+        dob = ""
+        for feature in entity.findall(".//ns:feature", NS):
+            type_elem = feature.find("ns:type", NS)
+            if type_elem is not None and type_elem.text == "Birthdate":
+                dob_elem = feature.find("ns:value", NS)
+                dob = dob_elem.text.strip() if dob_elem is not None else ""
+                break
+
+        if first_name or last_name:
+            cursor.execute("""
+                INSERT INTO sanctions (first_name, last_name, country, date_of_birth, program)
+                VALUES (?, ?, ?, ?, ?)
+            """, (first_name, last_name, country, dob, program))
 
     conn.commit()
     conn.close()
-    print("All files processed and loaded into sanctions.db")
+    return "Data loaded successfully."
 
-if __name__ == '__main__':
-    load_all_to_db()
+if __name__ == "__main__":
+    print(parse_and_load())
