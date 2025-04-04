@@ -1,4 +1,4 @@
-__pycache__/
+_sfdasdf_pycache__/
 *.pyc
 *.log
 *.db
@@ -9,5 +9,4 @@ identifier.sqlite
 **/.DS_Store
 *.xml
 *.XML
-all_files.txt
 build/
