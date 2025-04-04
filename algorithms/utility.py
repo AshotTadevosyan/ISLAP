@@ -1,7 +1,7 @@
 import re
 from unidecode import unidecode
 
-def normalize(name):
+def normalize_name(name):
     name = name.lower().strip()                 # lowercase and trim
     name = unidecode(name)                      # remove accents
     name = re.sub(r"[^\w\s]", "", name)         # remove punctuation

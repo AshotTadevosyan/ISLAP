@@ -7,22 +7,19 @@ from search.search_engine import find_best_matches
 
 app = FastAPI()
 
-names = load_names_from_db()
+records = load_names_from_db()
 
 @app.get("/search")
-def search(
-    name: str = Query(..., min_length=3),
-    country: str = Query("", alias="country"),
-    sanction_id: str = Query("", alias="sanction_id"),
-    threshold: float = Query(0.6)
-):
-    results = find_best_matches(name, names, country, sanction_id, threshold)
+def search(name: str = Query(..., min_length=3), threshold: float = 0.6):
+    results = find_best_matches(name, records, threshold)
     return [
         {
-            "name": r[0],
-            "country": r[1],
-            "sanction_id": r[2],
-            "score": round(r[3] * 100, 2)
+            "name": r["name"],
+            "score": round(r["score"] * 100, 2),
+            "country": r["country"],
+            "date_of_birth": r["date_of_birth"],
+            "program": r["program"],
+            "is_organization": r["is_organization"]
         }
         for r in results
     ]
