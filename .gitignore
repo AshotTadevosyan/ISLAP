@@ -9,4 +9,3 @@ identifier.sqlite
 **/.DS_Store
 *.xml
 *.XML
-build/
