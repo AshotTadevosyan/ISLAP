@@ -27,7 +27,7 @@ body {
   margin-bottom: 1.5rem;
   font-size: 1.5rem;
   font-weight: bold;
-  color: #0c3678;
+  color: #346E6B;
 }
 
 .input {
@@ -53,7 +53,7 @@ body {
 .search-button {
   width: 100%;
   padding: 0.75rem;
-  background-color: #0057ff;
+  background-color: #346E6B;
   color: white;
   font-size: 1rem;
   border: none;
@@ -71,14 +71,14 @@ body {
   padding: 1rem;
   margin-bottom: 1rem;
   background-color: #f1f5f9;
-  border-left: 4px solid #0c3678;
+  border-left: 4px solid #346E6B;
   border-radius: 6px;
   line-height: 1.4;
 }
 
 .tag {
-  background-color: #e0e7ff;
-  color: #1e3a8a;
+  background-color: #346E6B;
+  color: #1d7899;
   font-size: 0.75rem;
   font-weight: 500;
   padding: 2px 6px;
@@ -90,16 +90,16 @@ body {
 .details {
   margin-top: 0.5rem;
   font-size: 0.875rem;
-  color: #374151;
+  color: #346E6B;
 }
 
 .details a {
-  color: #1d4ed8;
+  color: #346E6B;
   text-decoration: underline;
 }
 
 .details a:hover {
-  color: #1e40af;
+  color: #346E6B;
 }
 
 .no-match {
@@ -116,12 +116,12 @@ body {
 .slider-thumb {
   width: 16px;
   height: 16px;
-  background-color: #0057ff;
+  background-color: #346E6B;
   border-radius: 50%;
   cursor: pointer;
 }
 .slider-thumb:hover {
-  background-color: #003bb5;
+  background-color: #346E6B;
 }
 
 .score-tag {
@@ -138,7 +138,7 @@ aside{
   width: 170px;
   display: flex;
   justify-content: center;
-  background-color: #1e3a8a;
+  background-color: #346E6B;
   border-radius: 0 8px 8px 0;
   }
 
