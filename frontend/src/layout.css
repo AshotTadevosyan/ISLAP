@@ -77,10 +77,10 @@ body {
 }
 
 .tag {
-  background-color: #346E6B;
+  background-color: #ffffff;
   color: #1d7899;
   font-size: 0.75rem;
-  font-weight: 500;
+  font-weight: 700;
   padding: 2px 6px;
   margin-left: 0.5rem;
   border-radius: 4px;
@@ -145,5 +145,3 @@ aside{
   aside > img{
     width: 100px;
   }
-
-
