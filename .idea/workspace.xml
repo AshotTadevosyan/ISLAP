@@ -5,42 +5,7 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="97c4a1c2-d2cf-419f-84fd-e3516c7cf4ef" name="Changes" comment="">
-      <change beforePath="$PROJECT_DIR$/.gitignore" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/README.md" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/algorithms/__init__.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/algorithms/jaro_winkler.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/algorithms/levenshtein.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/algorithms/scorer.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/algorithms/soundex.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/algorithms/token.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/algorithms/utility.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/api/__init__.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/api/main.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/asset-manifest.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/favicon.ico" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/index.html" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/logo192.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/logo512.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/manifest.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/robots.txt" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/static/css/main.70876ce9.css" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/static/css/main.70876ce9.css.map" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/static/js/453.80efc53e.chunk.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/static/js/453.80efc53e.chunk.js.map" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/static/js/main.637a98f0.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/static/js/main.637a98f0.js.LICENSE.txt" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/static/js/main.637a98f0.js.map" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/static/media/shape.dd46000d4c695bd589c2.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/data/xml_to_sqlite.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/.env" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/.env" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/package-lock.json" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/package-lock.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/package.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/src/App.js" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/App.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/render.yaml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/requirements.txt" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/search/__init__.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/search/db_loader.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/search/search_engine.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/README.md" beforeDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
