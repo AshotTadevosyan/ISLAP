@@ -12,16 +12,14 @@ The goal of the project is to allow users to search for sanctioned individuals o
 
 ---
 
-## Run the Project Locally
-
 ## Features
 
-Levenshtein, Soundex, Jaro-Winkler, Jaccard similarity
-Neural similarity using SentenceTransformers (MiniLM)
-Token-based matching for better partial results
-Real-time suggestions (auto-complete)
-Smart search threshold tuning
-Benchmark route to compare algorithm performance
+- Levenshtein, Soundex, Jaro-Winkler, Jaccard similarity
+- Neural similarity using SentenceTransformers (MiniLM)
+- Token-based matching for better partial results
+- Real-time suggestions (auto-complete)
+- Smart search threshold tuning
+- Benchmark route to compare algorithm performance
 
 ## Data Source
 
