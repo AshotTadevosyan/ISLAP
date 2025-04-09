@@ -9,3 +9,4 @@ identifier.sqlite
 **/.DS_Store
 *.xml
 *.XMLvenv/
+backend/venv/
