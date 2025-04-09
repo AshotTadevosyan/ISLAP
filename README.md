@@ -1,41 +1,46 @@
-# ISLAP – International Sanctions List Approximation Processing
+# ISLAP – International Sanctions List Approximate Processing
 
-**ISLAP** is a modular Python project designed to parse and load sanctions data, store it in a local database, and allow advanced name-matching using multiple string similarity algorithms. It supports both automated parsing of XML-based data and interactive searching through a command-line interface.
+**ISLAP** is a search engine built for exploring international sanctions lists using intelligent approximate string matching algorithms, including traditional fuzzy logic and modern neural embeddings.
 
----
+## Purpose
 
-## 📦 Features
-
-- 📂 **Sanctions List Parser**: Converts XML-based watchlists into an SQLite database.
-- 🔍 **Search Engine**: Finds similar names using fuzzy string matching.
-- 📊 **Scoring Engine**: Ranks matches using multiple algorithms:
-  - Jaro-Winkler
-  - Levenshtein Distance
-  - Soundex
-  - Combined weighted scoring
-  - Modular structure for easy maintenance and scaling
+The goal of the project is to allow users to search for sanctioned individuals or organizations using inexact or partial information, handling:
+- Spelling variations
+- Transliteration differences
+- Typo tolerance
+- Semantic similarity (via transformer models)
 
 ---
 
-## 🗂️ Project Structure
+## Run the Project Locally
 
-ISLAP1/
-├── api/                   
-│   └── main.py          
-├── build/                 
-├── data/                   
-│   └── sanctions.db       
-│   └── xml_to_sqlite.py   
-├── frontend/                 
-│   └── src/App.js       
-├── algorithms/               
-│   ├── jaro_winkler.py
-│   ├── levenshtein.py
-│   └── soundex.py
-├── search/                
-│   ├── search_engine.py
-│   └── db_loader.py
-├── .gitignore
-├── README.md
-├── requirements.txt
-└── render.yaml           
+## Features
+
+Levenshtein, Soundex, Jaro-Winkler, Jaccard similarity
+Neural similarity using SentenceTransformers (MiniLM)
+Token-based matching for better partial results
+Real-time suggestions (auto-complete)
+Smart search threshold tuning
+Benchmark route to compare algorithm performance
+
+## Data Source
+
+https://sanctionslist.ofac.treasury.gov/Home/ConsolidatedList
+
+## Notes
+
+sanctions.db is generated using the provided script and not included in this repo.
+
+You can view or export it using tools like DB Browser for SQLite.
+
+Core logic lives in:
+
+	•	algorithms/: scoring functions
+	•	search/: engine + database interface
+	•	api/: FastAPI server
+	•	frontend/: React app
+
+
+# Credit
+
+This project was developed as part of an internship at the Central Bank of Armenia
