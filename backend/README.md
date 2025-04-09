@@ -10,7 +10,6 @@ The goal of the project is to allow users to search for sanctioned individuals o
 - Typo tolerance
 - Semantic similarity (via transformer models)
 
----
 
 ## Features
 
@@ -33,10 +32,10 @@ You can view or export it using tools like DB Browser for SQLite.
 
 Core logic lives in:
 
-	•	algorithms/: scoring functions
-	•	search/: engine + database interface
-	•	api/: FastAPI server
-	•	frontend/: React app
+- algorithms/: scoring functions
+- search/: engine + database interface
+- api/: FastAPI server
+- frontend/: React app
 
 
 # Credit

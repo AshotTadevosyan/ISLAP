@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import "./layout.css";
 import ShapeImg from "./shape.png";
+import Axios from "axios";
 
 const PROGRAM_LINKS = {
   "NS-PLC": "https://ofac.treasury.gov/media/10411/download?inline",
@@ -20,14 +21,21 @@ function App() {
   const [results, setResults] = useState([]);
 
   const handleSearch = async (e) => {
+    console.log(fullName)
     e.preventDefault();
     if (!fullName.trim()) return;
 
     try {
-      const response = await fetch(
-        `/search?name=${encodeURIComponent(fullName)}&threshold=${threshold / 100}`
+      const response = await Axios.get(
+        `${process.env.REACT_APP_API_URL}/search`,
+        {
+          params: {
+            name: fullName,
+            threshold: threshold / 100,
+          },
+        }
       );
-      const data = await response.json();
+      const data = response.data
       setResults(data);
     } catch (error) {
       console.error("Search failed", error);
