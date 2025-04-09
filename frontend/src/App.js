@@ -27,7 +27,7 @@ function App() {
 
     try {
       const response = await Axios.get(
-        `${process.env.REACT_APP_API_URL}/https://islap-backend.onrender.com/search?name=...`,
+        `${process.env.REACT_APP_API_URL}/https://api.render.com/deploy/srv-cvkpga24d50c73du95c0?key=CFDjXvp1Uv8`,
         {
           params: {
             name: fullName,
