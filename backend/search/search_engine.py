@@ -1,5 +1,5 @@
-from algorithms.scorer import combined_score
-from algorithms.utility import normalize_name
+from backend.algorithms.scorer import combined_score
+from backend.algorithms.utility import normalize_name
 
 def find_best_matches(input_name, db_records, threshold=0.6):
     input_name = normalize_name(input_name)
