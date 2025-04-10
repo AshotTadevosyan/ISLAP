@@ -54,3 +54,8 @@ def benchmark(name1: str, name2: str):
 
 build_path = Path(__file__).resolve().parent.parent / "build"
 # app.mount("/", StaticFiles(directory=build_path, html=True), name="static")``
+
+
+if __name__ == "__main__":
+    import uvicorn
+    uvicorn.run("backend.api.main:app", host="0.0.0.0", port=10000, reload=False)
