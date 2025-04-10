@@ -1,7 +1,6 @@
 _sfdasdf_pycache__/
 *.pyc
 *.log
-*.db
 *.sqlite3
 *.DS_Store
 identifier.sqlite
