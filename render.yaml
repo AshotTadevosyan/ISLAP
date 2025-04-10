@@ -8,7 +8,7 @@ services:
     name: islap-backend
     runtime: python
     buildCommand: |
-      pip install -r backend/requirements.txt
+      pip install -r requirements.txt
       python backend/data/xml_to_sqlite.py
     startCommand: uvicorn backend.api.main:app --host 0.0.0.0
     plan: free
