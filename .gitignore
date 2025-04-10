@@ -6,6 +6,5 @@ _sfdasdf_pycache__/
 identifier.sqlite
 .idea/
 **/.DS_Store
-*.xml
 *.XMLvenv/
 backend/venv/
