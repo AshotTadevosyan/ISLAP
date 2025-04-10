@@ -3,3 +3,12 @@ uvicorn
 unidecode
 sentence-transformers
 jellyfish
+python-multipart
+aiofiles
+requests
+jinja2
+pydantic
+httpx
+pillow
+python-dotenv
+fastapi[all]
