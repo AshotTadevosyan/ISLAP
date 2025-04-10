@@ -2,8 +2,8 @@ import os
 import sqlite3
 import xml.etree.ElementTree as ET
 
-DB_PATH = "data/sanctions.db"
-XML_FILE = "data/cons_enhanced-2.xml"
+DB_PATH = "backend/data/sanctions.db"
+XML_FILE = "backend/data/cons_enhanced-2.xml"
 NS = {
     "ns": "https://sanctionslistservice.ofac.treas.gov/api/PublicationPreview/exports/ENHANCED_XML"
 }
