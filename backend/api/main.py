@@ -3,8 +3,8 @@ from fastapi.middleware.cors import CORSMiddleware
 from fastapi.staticfiles import StaticFiles
 from pathlib import Path
 
-from search.db_loader import load_names_from_db
-from search.search_engine import find_best_matches
+from backend.search.db_loader import load_names_from_db
+from backend.search.search_engine import find_best_matches
 
 from algorithms.levenshtein import levenshtein_score
 from algorithms.soundex import soundex_score
