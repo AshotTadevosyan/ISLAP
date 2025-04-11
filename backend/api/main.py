@@ -56,7 +56,7 @@ def benchmark(name1: str, name2: str):
         "combined_score": round(combined_score(name1, name2), 4),
     }
 
-build_path = Path(__file__).resolve().parent.parent / "build"
+build_path = Path(__file__).resolve().parent.parent / "frontend/build"
 # app.mount("/", StaticFiles(directory=build_path, html=True), name="static")``
 
 
