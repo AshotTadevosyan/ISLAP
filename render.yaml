@@ -1,17 +1,20 @@
 services:
   - type: web
     name: islap-frontend
-    env: static
+    runtime: node
+    rootDir: frontend
+    buildCommand: npm install && npm run build
+    startCommand: serve -s build
+    env: node
     staticPublishPath: frontend/build
+    plan: free
 
   - type: web
     name: islap-backend
     runtime: python
-    buildCommand: |
-      pip install -r requirements.txt
-      python backend/data/xml_to_sqlite.py
-    startCommand: uvicorn backend.api.main:app --host 0.0.0.0
-    plan: free
+    buildCommand: pip install -r requirements.txt && python backend/data/xml_to_sqlite.py
+    startCommand: uvicorn backend.api.main:app --host 0.0.0.0 --port 10000
     envVars:
       - key: PYTHON_VERSION
         value: 3.11.7
+    plan: free
