@@ -1,6 +1,6 @@
 import sqlite3
 
-def load_names_from_db(db_path="backend/data/sanctions.db"):
+def load_names_from_db(db_path="data/sanctions.db"):
     conn = sqlite3.connect(db_path)
     cursor = conn.cursor()
     cursor.execute("""
