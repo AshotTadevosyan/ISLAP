@@ -3,15 +3,15 @@ from fastapi.middleware.cors import CORSMiddleware
 from fastapi.staticfiles import StaticFiles
 from pathlib import Path
 
-from search.db_loader import load_names_from_db
-from search.search_engine import find_best_matches
+from backend.search.db_loader import load_names_from_db
+from backend.search.search_engine import find_best_matches
 
-from algorithms.levenshtein import levenshtein_score
-from algorithms.soundex import soundex_score
-from algorithms.jaro_winkler import jaro_winkler_score
-from algorithms.token import jaccard_similarity
-from algorithms.embedding import embedding_score
-from algorithms.scorer import combined_score
+from backend.algorithms.levenshtein import levenshtein_score
+from backend.algorithms.soundex import soundex_score
+from backend.algorithms.jaro_winkler import jaro_winkler_score
+from backend.algorithms.token import jaccard_similarity
+from backend.algorithms.embedding import embedding_score
+from backend.algorithms.scorer import combined_score
 
 app = FastAPI()
 
