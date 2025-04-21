@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import "./layout.css";
 import ShapeImg from "./shape.png";
 import Axios from "axios";
+import { BarChart, Bar, XAxis, YAxis, Tooltip, CartesianGrid, ResponsiveContainer } from "recharts";
 
 const PROGRAM_LINKS = {
   "NS-PLC": "https://ofac.treasury.gov/media/10411/download?inline",
@@ -19,9 +20,11 @@ function App() {
   const [fullName, setFullName] = useState("");
   const [threshold, setThreshold] = useState(80);
   const [results, setResults] = useState([]);
+  const [benchmarkResult, setBenchmarkResult] = useState(null);
+  const [benchmarkVisible, setBenchmarkVisible] = useState(true);
+  const [useML, setUseML] = useState(true);
 
   const handleSearch = async (e) => {
-    console.log(fullName)
     e.preventDefault();
     if (!fullName.trim()) return;
 
@@ -32,15 +35,44 @@ function App() {
           params: {
             name: fullName,
             threshold: threshold / 100,
+            ml: useML,
           },
         }
       );
-      const data = response.data
-      setResults(data);
+      setResults(response.data);
+      setBenchmarkVisible(true);
     } catch (error) {
       console.error("Search failed", error);
     }
   };
+
+  const handleBenchmark = async () => {
+    if (!fullName.trim() || results.length === 0) {
+      setBenchmarkResult("Please perform a search first.");
+      return;
+    }
+
+    const topMatch = results[0];
+    try {
+      const response = await Axios.get(`${process.env.REACT_APP_API_URL}/benchmark`, {
+        params: {
+          name1: fullName,
+          name2: topMatch.name,
+        },
+      });
+      setBenchmarkResult(response.data);
+      setBenchmarkVisible(false);
+    } catch (error) {
+      console.error("Benchmark failed", error);
+      setBenchmarkResult("Benchmark failed. Check the console.");
+    }
+  };
+
+  const chartData = benchmarkResult && typeof benchmarkResult === "object"
+    ? Object.entries(benchmarkResult)
+        .filter(([key]) => key !== "combined_score")
+        .map(([key, value]) => ({ metric: key, score: value * 100 }))
+    : [];
 
   return (
     <div className="container">
@@ -66,6 +98,14 @@ function App() {
             className="slider small-slider"
             style={{ width: "100%" }}
           />
+          <label className="ml-toggle">
+            <input
+              type="checkbox"
+              checked={useML}
+              onChange={(e) => setUseML(e.target.checked)}
+            />
+            Use ML Scoring
+          </label>
           <button type="submit" className="search-button">
             Search
           </button>
@@ -76,21 +116,59 @@ function App() {
               setFullName("");
               setThreshold(80);
               setResults([]);
+              setBenchmarkResult(null);
+              setBenchmarkVisible(true);
             }}
           >
             Reset
           </button>
+          {benchmarkVisible && (
+            <button
+              type="button"
+              className="benchmark-button"
+              onClick={handleBenchmark}
+            >
+              Run Benchmark
+            </button>
+          )}
           <p className="info-text">
             Note: The search is case-insensitive and will match partial names.
           </p>
         </form>
+
+        {benchmarkResult && typeof benchmarkResult === "object" && (
+          <div className="benchmark-result">
+            <h3>Benchmark Result ({fullName} vs {results[0]?.name}):</h3>
+            <ResponsiveContainer width="100%" height={300}>
+              <BarChart data={chartData}>
+                <CartesianGrid strokeDasharray="3 3" />
+                <XAxis dataKey="metric" />
+                <YAxis />
+                <Tooltip />
+                <Bar dataKey="score" fill="#8884d8" />
+              </BarChart>
+            </ResponsiveContainer>
+          </div>
+        )}
+
         <ul className="results">
           {results.length > 0 ? (
             results.map((match, idx) => (
               <li key={idx} className="result-item">
                 <strong>{match.name}</strong>
                 {match.is_organization && <span className="tag">Organization</span>}
-                <span className="score-tag">{match.score}%</span>
+                <span className="score-tag">
+                  {match.score === 100
+                    ? match.score.toLocaleString(undefined, {
+                        minimumFractionDigits: 1,
+                        maximumFractionDigits: 1,
+                      })
+                    : (match.score * 10).toLocaleString({
+                        minimumFractionDigits: 1,
+                        maximumFractionDigits: 1,
+                      })
+                  }%
+                </span>
                 <div className="details">
                   Country: {match.country || "N/A"} | Date of Birth: {match.date_of_birth || "N/A"} |
                   Link: {PROGRAM_LINKS[match.program] ? (
