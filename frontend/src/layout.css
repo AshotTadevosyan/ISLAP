@@ -145,3 +145,20 @@ aside{
   aside > img{
     width: 100px;
   }
+
+  .benchmark-result {
+    margin-top: 1rem;
+    padding: 0.75rem;
+    background-color: #e0f7f1;
+    border: 1px solid #10b981;
+    border-radius: 4px;
+    font-size: 0.95rem;
+  }
+
+  .ml-toggle {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin: 10px 0;
+    font-size: 14px;
+  }  
