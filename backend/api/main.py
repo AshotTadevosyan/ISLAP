@@ -31,12 +31,12 @@ app.add_middleware(
 records = load_names_from_db()
 
 @app.get("/search")
-def search(name: str = Query(..., min_length=3), threshold: float = 0.6):
-    results = find_best_matches(name, records, threshold)
+def search(name: str = Query(..., min_length=3), threshold: float = 0.6, ml: bool = True):
+    results = find_best_matches(name, records, threshold, use_ml=ml)
     return [
         {
             "name": r["name"],
-            "score": round(r["score"] * 100, 2),
+            "score": r["score"],
             "country": r["country"],
             "date_of_birth": r["date_of_birth"],
             "program": r["program"],
@@ -47,19 +47,25 @@ def search(name: str = Query(..., min_length=3), threshold: float = 0.6):
 
 @app.get("/benchmark")
 def benchmark(name1: str, name2: str):
-    return {
-        "levenshtein": round(levenshtein_score(name1, name2), 4),
-        "soundex": round(soundex_score(name1, name2), 4),
-        "jaro_winkler": round(jaro_winkler_score(name1, name2), 4),
-        "jaccard": round(jaccard_similarity(name1, name2), 4),
-        "embedding": round(embedding_score(name1, name2), 4),
-        "combined_score": round(combined_score(name1, name2), 4),
-    }
-
+    try:
+        return {
+            "levenshtein": round(levenshtein_score(name1, name2), 4),
+            "soundex": round(soundex_score(name1, name2), 4),
+            "jaro_winkler": round(jaro_winkler_score(name1, name2), 4),
+            "jaccard": round(jaccard_similarity(name1, name2), 4),
+            "embedding": round(embedding_score(name1, name2), 4),
+        }
+    except Exception as e:
+        print("Benchmark error:", e)
+        return {
+            "levenshtein": 0.0,
+            "soundex": 0.0,
+            "jaro_winkler": 0.0,
+            "jaccard": 0.0,
+            "embedding": 0.0,
+        }
 
 build_path = Path(__file__).resolve().parents[2] / "build"
-# app.mount("/", StaticFiles(directory=build_path, html=True), name="static")``
-
 
 if __name__ == "__main__":
     import uvicorn
