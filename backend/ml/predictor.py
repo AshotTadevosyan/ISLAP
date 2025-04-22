@@ -1,9 +1,9 @@
 import joblib
-from algorithms.levenshtein import levenshtein_score
-from algorithms.soundex import soundex_score
-from algorithms.jaro_winkler import jaro_winkler_score
-from algorithms.token import jaccard_similarity
-from algorithms.embedding import embedding_score
+from backend.algorithms.levenshtein import levenshtein_score
+from backend.algorithms.soundex import soundex_score
+from backend.algorithms.jaro_winkler import jaro_winkler_score
+from backend.algorithms.token import jaccard_similarity
+from backend.algorithms.embedding import embedding_score
 
 import os
 
