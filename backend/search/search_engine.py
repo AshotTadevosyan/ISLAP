@@ -1,6 +1,6 @@
-from algorithms.scorer import combined_score
-from algorithms.utility import normalize_name
-from ml.predictor import predict_score
+from backend.algorithms.scorer import combined_score
+from backend.algorithms.utility import normalize_name
+from backend.ml.predictor import predict_score
 
 def find_best_matches(input_name, db_records, threshold=0.6, max_results=10, use_ml=True):
     input_name = normalize_name(input_name)
