@@ -7,4 +7,5 @@ identifier.sqlite
 .idea/
 **/.DS_Store
 *.XMLvenv/
-backend/venv/
+backend/venv/node_modules/
+node_modules/
