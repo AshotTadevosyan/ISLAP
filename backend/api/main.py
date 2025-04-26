@@ -12,6 +12,8 @@ from algorithms.jaro_winkler import jaro_winkler_score
 from algorithms.token import jaccard_similarity
 from algorithms.embedding import embedding_score
 from algorithms.scorer import combined_score
+from algorithms.utility import normalize_name
+from ml.predictor import predict_score
 
 app = FastAPI()
 
@@ -45,26 +47,24 @@ def search(name: str = Query(..., min_length=3), threshold: float = 0.6, ml: boo
         for r in results
     ]
 
+
 @app.get("/benchmark")
 def benchmark(name1: str, name2: str):
     try:
-        return {
+        result = {
             "levenshtein": round(levenshtein_score(name1, name2), 4),
             "soundex": round(soundex_score(name1, name2), 4),
             "jaro_winkler": round(jaro_winkler_score(name1, name2), 4),
             "jaccard": round(jaccard_similarity(name1, name2), 4),
             "embedding": round(embedding_score(name1, name2), 4),
         }
+        return {"success": True, "data": result}
     except Exception as e:
         print("Benchmark error:", e)
-        return {
-            "levenshtein": 0.0,
-            "soundex": 0.0,
-            "jaro_winkler": 0.0,
-            "jaccard": 0.0,
-            "embedding": 0.0,
-        }
+        return {"success": False, "error": str(e)}
+    
 
+    
 build_path = Path(__file__).resolve().parents[2] / "build"
 
 if __name__ == "__main__":
