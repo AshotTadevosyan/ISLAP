@@ -69,6 +69,7 @@ uvicorn api.main:app --reload --port 10000
 cd frontend
 npm install
 npm start
+```
 
 ## Credit
 
