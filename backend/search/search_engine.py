@@ -11,6 +11,14 @@ def find_best_matches(input_name, db_records, threshold=0.6, max_results=10, use
         full_name = f"{record['first_name']} {record['last_name']}".lower()
         normalized_full_name = normalize_name(full_name)
 
+        # if the input name is an exact match show it first
+        if input_name in normalized_full_name:
+            match = record.copy()
+            match["score"] = 100.0
+            match["matched_by"] = "substring"
+            matches.append(match)
+            continue
+
         score = predict_score(input_name, normalized_full_name) if use_ml else combined_score(input_name, normalized_full_name)
         score = round(score * 100, 2)
 
@@ -26,7 +34,7 @@ def find_best_matches(input_name, db_records, threshold=0.6, max_results=10, use
         fallback_pool.sort(key=lambda x: x["score"], reverse=True)
         fallback_matches = fallback_pool[:max_results]
         for m in fallback_matches:
-            m["below_threshold"] = True  
+            m["below_threshold"] = True
         return fallback_matches
 
     matches.sort(key=lambda x: x["score"], reverse=True)
