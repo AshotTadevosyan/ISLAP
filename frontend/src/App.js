@@ -48,11 +48,12 @@ function App() {
 
   const handleBenchmark = async () => {
     if (!fullName.trim() || results.length === 0) {
-      setBenchmarkResult("Please perform a search first.");
+      setBenchmarkResult({ error: "Please perform a search first." });
       return;
     }
 
     const topMatch = results[0];
+
     try {
       const response = await Axios.get(`${process.env.REACT_APP_API_URL}/benchmark`, {
         params: {
@@ -60,19 +61,29 @@ function App() {
           name2: topMatch.name,
         },
       });
-      setBenchmarkResult(response.data);
-      setBenchmarkVisible(false);
+
+      const data = response.data;
+      console.log("Benchmark API response:", data);
+
+      if (data.success) {
+        setBenchmarkResult(data.data);
+        setBenchmarkVisible(false);
+      } else {
+        setBenchmarkResult({ error: data.error || "Unknown error" });
+      }
     } catch (error) {
       console.error("Benchmark failed", error);
-      setBenchmarkResult("Benchmark failed. Check the console.");
+      setBenchmarkResult({ error: "Benchmark failed. Check the console." });
     }
   };
 
-  const chartData = benchmarkResult && typeof benchmarkResult === "object"
-    ? Object.entries(benchmarkResult)
-        .filter(([key]) => key !== "combined_score")
-        .map(([key, value]) => ({ metric: key, score: value * 100 }))
-    : [];
+  const chartData =
+    benchmarkResult && !benchmarkResult.error
+      ? Object.entries(benchmarkResult).map(([key, value]) => ({
+          metric: key,
+          score: value * 100,
+        }))
+      : [];
 
   return (
     <div className="container">
@@ -136,7 +147,7 @@ function App() {
           </p>
         </form>
 
-        {benchmarkResult && typeof benchmarkResult === "object" && (
+        {benchmarkResult && !benchmarkResult.error && (
           <div className="benchmark-result">
             <h3>Benchmark Result ({fullName} vs {results[0]?.name}):</h3>
             <ResponsiveContainer width="100%" height={300}>
@@ -151,27 +162,26 @@ function App() {
           </div>
         )}
 
+        {benchmarkResult?.error && (
+          <div className="benchmark-result error">{benchmarkResult.error}</div>
+        )}
+
         <ul className="results">
           {results.length > 0 ? (
             results.map((match, idx) => (
               <li key={idx} className="result-item">
                 <strong>{match.name}</strong>
-                {match.is_organization && <span className="tag">Organization</span>}
+                {match.is_organization && (
+                  <span className="tag">Organization</span>
+                )}
                 <span className="score-tag">
-                  {match.score === 100
-                    ? match.score.toLocaleString(undefined, {
-                        minimumFractionDigits: 1,
-                        maximumFractionDigits: 1,
-                      })
-                    : (match.score * 10).toLocaleString({
-                        minimumFractionDigits: 1,
-                        maximumFractionDigits: 1,
-                      })
-                  }%
+                  {match.score.toLocaleString(undefined, {
+                    minimumFractionDigits: 1,
+                    maximumFractionDigits: 1,
+                  })}%
                 </span>
                 <div className="details">
-                  Country: {match.country || "N/A"} | Date of Birth: {match.date_of_birth || "N/A"} |
-                  Link: {PROGRAM_LINKS[match.program] ? (
+                  Country: {match.country || "N/A"} | Date of Birth: {match.date_of_birth || "N/A"} | Link: {PROGRAM_LINKS[match.program] ? (
                     <a
                       href={PROGRAM_LINKS[match.program]}
                       target="_blank"
@@ -189,6 +199,10 @@ function App() {
             <li className="no-match">No matches found.</li>
           )}
         </ul>
+        <footer className="footer">
+        <p>This project was developed as part of an internship at the Central Bank of Armenia</p>
+        <p>© Ashot Tadevosyan, 2025</p>
+      </footer>
       </div>
       <aside>
         <img src={ShapeImg} alt="Shape" />

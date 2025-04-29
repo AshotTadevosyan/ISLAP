@@ -8,4 +8,5 @@ identifier.sqlite
 **/.DS_Store
 *.XMLvenv/
 backend/venv/
+backend/venv/node_modules/
 node_modules/

@@ -1,6 +1,7 @@
 import sqlite3
 import random
-import pickle
+import pandas as pd
+
 from backend.algorithms.levenshtein import levenshtein_score
 from backend.algorithms.soundex import soundex_score
 from backend.algorithms.jaro_winkler import jaro_winkler_score
@@ -8,32 +9,25 @@ from backend.algorithms.token import jaccard_similarity
 from backend.algorithms.embedding import embedding_score
 
 from sklearn.linear_model import LogisticRegression
-from sklearn.model_selection import train_test_split
-from sklearn.metrics import classification_report
+import joblib
+import os
 
+conn = sqlite3.connect("backend/data/sanctions.db") 
+df = pd.read_sql_query("SELECT first_name, last_name FROM sanctions WHERE first_name IS NOT NULL AND last_name IS NOT NULL", conn)
+conn.close()
 
-def load_real_pairs(db_path, sample_size=300):
-    conn = sqlite3.connect(db_path)
-    cursor = conn.cursor()
-    cursor.execute("SELECT first_name, last_name FROM sanctions")
-    rows = cursor.fetchall()
-    conn.close()
+df["full_name"] = df["first_name"].str.strip() + " " + df["last_name"].str.strip()
+names = df["full_name"].dropna().unique().tolist()
+names = [name for name in names if len(name.split()) > 1]
 
-    full_names = [f"{first} {last}".strip() for first, last in rows if first and last]
-    full_names = list(set(full_names))
-    random.shuffle(full_names)
+positive_samples = [(name, name, 1) for name in names]
 
-    real_pairs = [(a, b, 1) for a, b in zip(full_names[::2], full_names[1::2])][:sample_size]
-    return real_pairs
+random.shuffle(names)
+half = len(names) // 2
+negative_samples = [(names[i], names[i + half], 0) for i in range(half)]
 
-
-def generate_fake_pairs(full_names, sample_size=300):
-    fake_pairs = []
-    for _ in range(sample_size):
-        a, b = random.sample(full_names, 2)
-        fake_pairs.append((a, b, 0))
-    return fake_pairs
-
+samples = positive_samples + negative_samples
+random.shuffle(samples)
 
 def extract_features(name1, name2):
     return [
@@ -41,34 +35,20 @@ def extract_features(name1, name2):
         soundex_score(name1, name2),
         jaro_winkler_score(name1, name2),
         jaccard_similarity(name1, name2),
-        embedding_score(name1, name2)
+        embedding_score(name1, name2),
     ]
 
+X = []
+y = []
 
-def main():
-    db_path = "backend/data/sanctions.db"  
-    real = load_real_pairs(db_path)
-    names = [name for pair in real for name in pair[:2]]
-    fake = generate_fake_pairs(names)
+for name1, name2, label in samples:
+    try:
+        X.append(extract_features(name1, name2))
+        y.append(label)
+    except Exception as e:
+        print(f"Skipping ({name1}, {name2}) due to error: {e}")
 
-    all_pairs = real + fake
-    random.shuffle(all_pairs)
+model = LogisticRegression()
+model.fit(X, y)
 
-    X = [extract_features(a, b) for a, b, _ in all_pairs]
-    y = [label for _, _, label in all_pairs]
-
-    X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42)
-
-    model = LogisticRegression()
-    model.fit(X_train, y_train)
-
-    y_pred = model.predict(X_test)
-    print(classification_report(y_test, y_pred))
-
-    with open("backend/ml/similarity_model.pkl", "wb") as f:
-        pickle.dump(model, f)
-    print("Model trained and saved.")
-
-
-if __name__ == "__main__":
-    main()
+joblib.dump(model, "backend/ml/similarity_model.pkl")  
