@@ -50,5 +50,3 @@ model = LogisticRegression()
 model.fit(X, y)
 
 joblib.dump(model, "backend/ml/similarity_model.pkl")  
-
-print("Model training complete. Saved as similarity_model.pkl")
