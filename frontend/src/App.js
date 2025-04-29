@@ -2,24 +2,14 @@ import React, { useState } from "react";
 import "./layout.css";
 import ShapeImg from "./shape.png";
 import Axios from "axios";
-import {
-  BarChart,
-  Bar,
-  XAxis,
-  YAxis,
-  Tooltip,
-  CartesianGrid,
-  ResponsiveContainer,
-} from "recharts";
+import { BarChart, Bar, XAxis, YAxis, Tooltip, CartesianGrid, ResponsiveContainer } from "recharts";
 
 const PROGRAM_LINKS = {
   "NS-PLC": "https://ofac.treasury.gov/media/10411/download?inline",
-  "UKRAINE-EO13662":
-    "https://ofac.treasury.gov/sanctions-programs-and-country-information/ukraine-russia-related-sanctions",
+  "UKRAINE-EO13662": "https://ofac.treasury.gov/sanctions-programs-and-country-information/ukraine-russia-related-sanctions",
   "RUSSIA-EO14024": "https://ofac.treasury.gov/faqs/topic/6626",
   "FSE-IR": "https://ofac.treasury.gov/recent-actions/fse_list_intro",
-  "CAATSA - RUSSIA":
-    "https://ofac.treasury.gov/sanctions-programs-and-country-information/countering-americas-adversaries-through-sanctions-act-related-sanctions",
+  "CAATSA - RUSSIA": "https://ofac.treasury.gov/sanctions-programs-and-country-information/countering-americas-adversaries-through-sanctions-act-related-sanctions",
   "VENEZUELA-EO13850": "https://ofac.treasury.gov/faqs/topic/1581",
   "CMIC-EO13959": "https://ofac.treasury.gov/faqs/topic/5671",
   "BURMA-EO14014": "https://home.treasury.gov/news/press-releases/jy1701",
@@ -65,15 +55,12 @@ function App() {
     const topMatch = results[0];
 
     try {
-      const response = await Axios.get(
-        `${process.env.REACT_APP_API_URL}/benchmark`,
-        {
-          params: {
-            name1: fullName,
-            name2: topMatch.name,
-          },
-        }
-      );
+      const response = await Axios.get(`${process.env.REACT_APP_API_URL}/benchmark`, {
+        params: {
+          name1: fullName,
+          name2: topMatch.name,
+        },
+      });
 
       const data = response.data;
       console.log("Benchmark API response:", data);
@@ -188,15 +175,13 @@ function App() {
                   <span className="tag">Organization</span>
                 )}
                 <span className="score-tag">
-  {match.score.toLocaleString(undefined, {
-    minimumFractionDigits: 1,
-    maximumFractionDigits: 1,
-  })}%
-</span>
+                  {match.score.toLocaleString(undefined, {
+                    minimumFractionDigits: 1,
+                    maximumFractionDigits: 1,
+                  })}%
+                </span>
                 <div className="details">
-                  Country: {match.country || "N/A"} | Date of Birth:{" "}
-                  {match.date_of_birth || "N/A"} | Link:{" "}
-                  {PROGRAM_LINKS[match.program] ? (
+                  Country: {match.country || "N/A"} | Date of Birth: {match.date_of_birth || "N/A"} | Link: {PROGRAM_LINKS[match.program] ? (
                     <a
                       href={PROGRAM_LINKS[match.program]}
                       target="_blank"
@@ -214,6 +199,10 @@ function App() {
             <li className="no-match">No matches found.</li>
           )}
         </ul>
+        <footer className="footer">
+        <p>This project was developed as part of an internship at the Central Bank of Armenia</p>
+        <p>© Ashot Tadevosyan, 2025</p>
+      </footer>
       </div>
       <aside>
         <img src={ShapeImg} alt="Shape" />
