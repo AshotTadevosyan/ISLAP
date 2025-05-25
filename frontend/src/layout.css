@@ -171,3 +171,7 @@ aside{
     color: #666;
     border-top: 1px solid #eee;
   }
+
+  .results {
+    min-height: 55px;
+  }
